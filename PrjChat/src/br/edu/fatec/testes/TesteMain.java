@@ -2,6 +2,7 @@ package br.edu.fatec.testes;
 
 import org.json.JSONObject;
 
+import br.edu.fatec.actions.Leave;
 import br.edu.fatec.actions.Say;
 import br.edu.fatec.actions.Search;
 import br.edu.fatec.actions.Whisper;
@@ -42,5 +43,14 @@ public class TesteMain {
 		JSONObject jsonWhisper = new JSONObject(whisper);
 		
 		System.out.println(jsonWhisper);
+	}
+	
+	public static void executeLeave(String action, String content){
+		Leave leave = new Leave();
+		leave.setAction(action);
+		
+		JSONObject jsonLeave = new JSONObject(leave);
+		
+		System.out.println(jsonLeave);
 	}
 }
