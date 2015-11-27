@@ -13,6 +13,8 @@ public class TesteMain {
 		executeSay("223.139.219.100", "say", "minha primeira mensagem");
 		executeSearch("search", "renatodanielss");
 		executeWhisper("whisper", "mais uma mensagem");
+		executeLeave("leave");
+		executeReport("report", "JSON parse error");
 	}
 	
 	public static void executeSay(String target, String action, String content){
@@ -46,7 +48,7 @@ public class TesteMain {
 		System.out.println(jsonWhisper);
 	}
 	
-	public static void executeLeave(String action, String content){
+	public static void executeLeave(String action){
 		Leave leave = new Leave();
 		leave.setAction(action);
 		
