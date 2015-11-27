@@ -3,6 +3,7 @@ package br.edu.fatec.testes;
 import org.json.JSONObject;
 
 import br.edu.fatec.actions.Leave;
+import br.edu.fatec.actions.Report;
 import br.edu.fatec.actions.Say;
 import br.edu.fatec.actions.Search;
 import br.edu.fatec.actions.Whisper;
@@ -52,5 +53,15 @@ public class TesteMain {
 		JSONObject jsonLeave = new JSONObject(leave);
 		
 		System.out.println(jsonLeave);
+	}
+	
+	public static void executeReport(String action, String message){
+		Report report = new Report();
+		report.setAction(action);
+		report.setMessage(message);
+		
+		JSONObject jsonReport = new JSONObject(report);
+		
+		System.out.println(jsonReport);
 	}
 }
