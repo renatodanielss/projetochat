@@ -1,7 +1,9 @@
 package br.edu.fatec.testes;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import br.edu.fatec.actions.KeepAlive;
 import br.edu.fatec.actions.Leave;
 import br.edu.fatec.actions.Report;
 import br.edu.fatec.actions.Say;
@@ -10,11 +12,20 @@ import br.edu.fatec.actions.Whisper;
 
 public class TesteMain {
 	public static void main(String[] args){
+		JSONArray users = new JSONArray();
+		JSONObject jsonUser = new JSONObject();
+		
+		jsonUser.put("nickname", "Renato");
+		jsonUser.put("address", "223.139.219.104");
+		
+		users.put(jsonUser);
+		
 		executeSay("223.139.219.100", "say", "minha primeira mensagem");
 		executeSearch("search", "renatodanielss");
 		executeWhisper("whisper", "mais uma mensagem");
 		executeLeave("leave");
 		executeReport("report", "JSON parse error");
+		executeKeepAlive("keepAlive", "renatodanielss", users);
 	}
 	
 	public static void executeSay(String target, String action, String content){
@@ -65,5 +76,16 @@ public class TesteMain {
 		JSONObject jsonReport = new JSONObject(report);
 		
 		System.out.println(jsonReport);
+	}
+	
+	public static void executeKeepAlive(String action, String nickname, JSONArray users){
+		KeepAlive keepAlive = new KeepAlive();
+		keepAlive.setAction(action);
+		keepAlive.setNickname(nickname);
+		keepAlive.setUsers(users);
+		
+		JSONObject jsonKeepAlive = new JSONObject(keepAlive);
+		
+		System.out.println(jsonKeepAlive);
 	}
 }
