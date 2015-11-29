@@ -10,15 +10,7 @@ import java.util.Enumeration;
 import java.util.Scanner;
 
 public class SearchBroadcastAddress extends Thread{
-// Minha alteracao
-// Minha alteracao 2
-// Minha alteracao 3
-// Minha alteracao 4
-// Minha alteracao 5
-// Minha alteracao 6
-// Minha alteracao 7
-// Minha alteracao 8
-// Minha alteracao 9
+
 	/**
 	 * @param args
 	 * @throws IOException
