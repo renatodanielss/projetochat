@@ -23,7 +23,7 @@ public class ServidorThread extends Thread
             String resposta1 = "";
             ServerSocket welcomeSocket1 = new ServerSocket(4445);
           
-            int i = 1;
+            //int i = 1;
         	
             while(!resposta1.equals("null\n")){
             //while(i == 1){
