@@ -1,4 +1,4 @@
-package br.com.cts.ui;
+package br.edu.fatec.ui;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
