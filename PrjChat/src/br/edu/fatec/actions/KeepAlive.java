@@ -7,6 +7,10 @@ public class KeepAlive {
 	private String nickname;
 	private JSONArray users;
 	
+	public KeepAlive(){
+		this.users = new JSONArray();
+	}
+	
 	public String getAction() {
 		return action;
 	}
