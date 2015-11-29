@@ -1,4 +1,4 @@
-package br.edu.fatec.server;
+package br.edu.fatec.serverreserva;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,11 @@ import java.net.Socket;
 
 public class ServidorTCP extends Thread{
 
+	public static void main (String[] args){
+		ServidorTCP servidorTCP = new ServidorTCP();
+		servidorTCP.start();
+	}
+	
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -16,7 +21,7 @@ public class ServidorTCP extends Thread{
 	public void run() {
 		try{
 			@SuppressWarnings("resource")
-			ServerSocket a = new ServerSocket(4555);
+			ServerSocket a = new ServerSocket(4445);
 			while(true){
 				Socket sk = a.accept();
 				InputStream in = sk.getInputStream();
