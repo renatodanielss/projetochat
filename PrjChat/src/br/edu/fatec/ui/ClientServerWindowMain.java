@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -38,6 +40,11 @@ public class ClientServerWindowMain {
 	 */
 	public static void main(String[] args) {
 		try {
+			String nickname = "";
+			while(nickname.trim().equals("")){
+				nickname = JOptionPane.showInputDialog("Digite o nickname: ");
+
+			}
 			ClientServerWindowMain window = new ClientServerWindowMain();
 			window.open();
 		} catch (Exception e) {
