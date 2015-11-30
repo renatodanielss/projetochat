@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.json.JSONObject;
+
 public class ServidorThread extends Thread
 {
 
@@ -29,8 +31,10 @@ public class ServidorThread extends Thread
             //while(i == 1){
             	Socket connectionSocket1 = welcomeSocket1.accept();
             	BufferedReader inFromClient1 = new BufferedReader(new InputStreamReader(connectionSocket1.getInputStream()));
-                resposta1 = (new StringBuilder(String.valueOf(inFromClient1.readLine()))).append('\n').toString();
-                System.out.println(resposta1);
+                //resposta1 = (new StringBuilder(String.valueOf(inFromClient1.readLine()))).append('\n').toString();
+            	JSONObject jsonSay = new JSONObject((new StringBuilder(String.valueOf(inFromClient1.readLine()))).append('\n').toString());
+            	
+                System.out.println(jsonSay);
             }
 
             System.out.println("Notebook saiu da conversa");
@@ -40,6 +44,6 @@ public class ServidorThread extends Thread
         {
             e.printStackTrace();
         }
-        System.out.println("Convesa encerrada!");
+        System.out.println("Conversa encerrada!");
     }
 }

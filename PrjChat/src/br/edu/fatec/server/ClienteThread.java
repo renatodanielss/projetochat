@@ -2,26 +2,28 @@ package br.edu.fatec.server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import org.json.JSONObject;
+
+import br.edu.fatec.actions.Say;
+
 public class ClienteThread extends Thread
 {
+	//Socket clienteSocket;
 
 	public static void main (String[] args){
-		try {
-			Socket clienteSocket = new Socket("localhost", 4445);
-			ClienteThread clienteThread = new ClienteThread(clienteSocket);
-			clienteThread.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ClienteThread clienteThread = new ClienteThread();
+		clienteThread.start();
+	}
+	
+	public ClienteThread(){
 	}
 	
     public ClienteThread(Socket clienteSocket)
     {
-        this.clienteSocket = clienteSocket;
+        //this.clienteSocket = clienteSocket;
     }
 
     public void run()
@@ -31,12 +33,22 @@ public class ClienteThread extends Thread
         {
             while(!sentence.equals("exit")) 
             {
+            	Socket clienteSocket = new Socket("localhost", 4445);
                 BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
                 DataOutputStream outToServer = new DataOutputStream(clienteSocket.getOutputStream());
                 sentence = inFromUser.readLine();
-                outToServer.writeBytes((new StringBuilder(String.valueOf(sentence))).append('\n').toString());
+                
+                Say say = new Say();
+                say.setAction("say");
+                say.setTarget("localhost");
+                say.setContent(sentence);
+                JSONObject jsonSay = new JSONObject(say);
+                
+                //outToServer.writeBytes((new StringBuilder(String.valueOf(sentence))).append('\n').toString());
+                outToServer.writeBytes((new StringBuilder(String.valueOf(jsonSay))).append('\n').toString());
+                clienteSocket.close();
             }
-            clienteSocket.close();
+            //clienteSocket.close();
             interrupt();
         }
         catch(Exception e)
@@ -44,6 +56,4 @@ public class ClienteThread extends Thread
             e.printStackTrace();
         }
     }
-
-    Socket clienteSocket;
 }

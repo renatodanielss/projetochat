@@ -3,6 +3,8 @@ package br.edu.fatec.server;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import org.json.JSONObject;
+
 public class UDPReceive extends Thread{
 	
 	public static void main (String[] args){
@@ -31,13 +33,20 @@ public class UDPReceive extends Thread{
 			while (true) {
 				// Wait to receive a datagram
 				dsocket.receive(packet);
-
+				
+				//Converter  o conteúdo do pacote do datagrama e exibir na tela para o usuário
+				JSONObject jsonSay = new JSONObject(new String(buffer, 0, packet.getLength()));
+				System.out.println(jsonSay);
+				
+				//Resetar o tamanho do pacote antes de reusá-lo
+				packet.setLength(buffer.length);
+				
 				// Convert the contents to a string, and display them
-				String msg = new String(buffer, 0, packet.getLength());
-				System.out.println(packet.getAddress().getHostName() + ": " + msg);
+				//String msg = new String(buffer, 0, packet.getLength());
+				//System.out.println(packet.getAddress().getHostName() + ": " + msg);
 
 				// Reset the length of the packet before reusing it.
-				packet.setLength(buffer.length);
+				//packet.setLength(buffer.length);
 			}
 		} catch (Exception e) {
 			System.err.println(e);

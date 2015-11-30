@@ -6,14 +6,21 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import br.edu.fatec.actions.Say;
+import br.edu.fatec.actions.User;
 
 public class ClientServerWindowMain {
 	protected Shell shlChat;
@@ -21,6 +28,7 @@ public class ClientServerWindowMain {
     private Socket clienteSocket;
     private DataOutputStream outToServer;
     private Text txtMessages;
+    private List list;
 
 	/**
 	 * Launch the application.
@@ -55,33 +63,82 @@ public class ClientServerWindowMain {
 	 */
 	protected void createContents() {
 		shlChat = new Shell();
-        shlChat.setSize(450, 300);
+        shlChat.setSize(714, 300);
         shlChat.setText("Chat");
         txtSendMessage = new Text(shlChat, 2048);
         txtSendMessage.addKeyListener(new KeyAdapter() {
 
             public void keyReleased(KeyEvent e)
             {
-                if(e.character == '\r')
-                    enviarMensagem();
+                if(e.character == '\r'){
+                	Say say = new Say();
+                	say.setAction("say");
+                	say.setTarget("223.139.219.104");
+                	say.setContent(txtSendMessage.getText());
+                	JSONObject jsonSay = new JSONObject(say);
+                    enviarMensagem(jsonSay);
+                }
             }
         });
         
-        txtSendMessage.setBounds(46, 147, 334, 21);
+        txtSendMessage.setBounds(45, 197, 334, 21);
         Button btnSendMessage = new Button(shlChat, 0);
         btnSendMessage.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e)
             {
-                enviarMensagem();
+            	Say say = new Say();
+            	say.setAction("say");
+            	say.setTarget("223.139.219.104");
+            	say.setContent(txtSendMessage.getText());
+            	JSONObject jsonSay = new JSONObject(say);
+                enviarMensagem(jsonSay);
             }
         });
         
-        btnSendMessage.setBounds(46, 172, 75, 25);
+        btnSendMessage.setBounds(45, 222, 75, 25);
         btnSendMessage.setText("&Enviar");
         txtMessages = new Text(shlChat, 2626);
         txtMessages.setEditable(false);
-        txtMessages.setBounds(45, 10, 335, 120);
+        txtMessages.setBounds(45, 10, 335, 171);
+        
+        list = new List(shlChat, SWT.BORDER);
+        
+        User user = new User();
+		user.setNickname("Renato");
+		user.setAddress("223.139.219.104");
+		
+		User user2 = new User();
+		user2.setNickname("Mayara");
+		user2.setAddress("223.139.219.104");
+		
+		JSONObject jsonUser = new JSONObject(user);
+		JSONObject jsonUser2 = new JSONObject(user2);
+		
+        JSONArray users = new JSONArray();
+        
+        users.put(jsonUser);
+        users.put(jsonUser2);
+        
+        System.out.println(users);
+        
+        for (int i = 0; i < users.length(); i++){
+        	JSONObject jsonUsers = users.getJSONObject(i);
+        	//System.out.println(jsonSays);
+        	list.add(jsonUsers.get("nickname").toString() + " - " + jsonUsers.get("address").toString());
+        }
+        
+        //list.setItems(new String[] {"Teste 1", "Teste 2", "Teste 3"});
+        list.setBounds(398, 10, 278, 171);
+        list.addSelectionListener(new SelectionAdapter() {
+        	@Override
+        	public void widgetSelected(SelectionEvent e) {
+        		
+        		
+        		txtMessages.setText(list.getItem(list.getSelectionIndex()).toString());
+        	}
+        });
+        
         Thread servidorThread = new Thread(new Runnable() {
 
             public void run()
@@ -90,13 +147,13 @@ public class ClientServerWindowMain {
                 {
                     String resposta1 = "";
                     ServerSocket welcomeSocket1 = new ServerSocket(4445);
-                    Socket connectionSocket1 = welcomeSocket1.accept();
-                    BufferedReader inFromClient1 = new BufferedReader(new InputStreamReader(connectionSocket1.getInputStream()));
-                    Display display;
-                    for(; !resposta1.equals("null\n"); ClientServerWindowMain.doUpdate(display, txtMessages, resposta1))
-                    {
+                    Display display = null;
+                    while(!resposta1.equals("null\n")){
+                    	Socket connectionSocket1 = welcomeSocket1.accept();
+                        BufferedReader inFromClient1 = new BufferedReader(new InputStreamReader(connectionSocket1.getInputStream()));
                         resposta1 = (new StringBuilder(String.valueOf(inFromClient1.readLine()))).append('\n').toString();
                         display = Display.getDefault();
+                        ClientServerWindowMain.doUpdate(display, txtMessages, resposta1);
                     }
 
                     display = Display.getDefault();
@@ -105,22 +162,23 @@ public class ClientServerWindowMain {
                 }
                 catch(Exception e)
                 {
+                	System.out.println("Catch: ");
                     e.printStackTrace();
                 }
-                System.out.println("Convesa encerrada!");
+                System.out.println("Conversa encerrada!");
             }
         });
         servidorThread.start();
 	}
 	
-	private void enviarMensagem()
+	private void enviarMensagem(JSONObject jsonObject)
     {
         if(txtSendMessage.getText().length() > 0)
         {
             String sentence = "";
             try
             {
-                clienteSocket = new Socket("localhost", 4445);
+                clienteSocket = new Socket(jsonObject.get("target").toString(), 4445);
                 outToServer = new DataOutputStream(clienteSocket.getOutputStream());
                 sentence = txtSendMessage.getText().toString();
                 txtSendMessage.setText("");

@@ -9,6 +9,10 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.Scanner;
 
+import org.json.JSONObject;
+
+import br.edu.fatec.actions.Say;
+
 public class SearchBroadcastAddress extends Thread{
 
 	/**
@@ -43,7 +47,15 @@ public class SearchBroadcastAddress extends Thread{
 						DatagramSocket socket = new DatagramSocket();
 						socket.setBroadcast(true);
 						// send request
-						String str = teclado.nextLine();
+						String message = teclado.nextLine();
+						
+						Say say = new Say();
+						say.setAction("say");
+						say.setTarget("223.139.219.100");
+						say.setContent(message);
+						JSONObject jsonSay = new JSONObject(say);
+						String str = String.valueOf(jsonSay);
+						
 						byte[] buf = str.getBytes();
 					
 						DatagramPacket packet = new DatagramPacket(buf, buf.length,broadcast, 4445);
