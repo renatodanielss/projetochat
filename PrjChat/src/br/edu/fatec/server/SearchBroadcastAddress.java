@@ -58,7 +58,7 @@ public class SearchBroadcastAddress extends Thread{
 						
 						byte[] buf = str.getBytes();
 					
-						DatagramPacket packet = new DatagramPacket(buf, buf.length,broadcast, 4445);
+						DatagramPacket packet = new DatagramPacket(buf, buf.length,broadcast, 9000);
 						socket.send(packet);
 						socket.close();
 					}	

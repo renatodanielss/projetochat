@@ -33,7 +33,7 @@ public class ClienteThread extends Thread
         {
             while(!sentence.equals("exit")) 
             {
-            	Socket clienteSocket = new Socket("localhost", 4445);
+            	Socket clienteSocket = new Socket("localhost", 9000);
                 BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
                 DataOutputStream outToServer = new DataOutputStream(clienteSocket.getOutputStream());
                 sentence = inFromUser.readLine();

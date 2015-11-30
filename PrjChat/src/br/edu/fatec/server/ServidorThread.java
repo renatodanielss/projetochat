@@ -23,7 +23,7 @@ public class ServidorThread extends Thread
     	try
         {
             String resposta1 = "";
-            ServerSocket welcomeSocket1 = new ServerSocket(4445);
+            ServerSocket welcomeSocket1 = new ServerSocket(9000);
           
             //int i = 1;
         	

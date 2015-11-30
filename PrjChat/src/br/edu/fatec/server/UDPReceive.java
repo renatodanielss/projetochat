@@ -15,7 +15,7 @@ public class UDPReceive extends Thread{
 	@Override
 	public void run() {
 		try {
-			int port = 4445;
+			int port = 9000;
 
 			// Create a socket to listen on the port.
 			@SuppressWarnings("resource")

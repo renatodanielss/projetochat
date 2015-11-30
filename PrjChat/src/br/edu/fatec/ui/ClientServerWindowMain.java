@@ -43,7 +43,6 @@ public class ClientServerWindowMain {
 			String nickname = "";
 			while(nickname.trim().equals("")){
 				nickname = JOptionPane.showInputDialog("Digite o nickname: ");
-
 			}
 			ClientServerWindowMain window = new ClientServerWindowMain();
 			window.open();
@@ -155,7 +154,7 @@ public class ClientServerWindowMain {
                 try
                 {
                     String resposta1 = "";
-                    ServerSocket welcomeSocket1 = new ServerSocket(4445);
+                    ServerSocket welcomeSocket1 = new ServerSocket(9000);
                     Display display = null;
                     while(!resposta1.equals("null\n")){
                     	Socket connectionSocket1 = welcomeSocket1.accept();
@@ -187,7 +186,7 @@ public class ClientServerWindowMain {
             //String sentence = "";
             try
             {
-                clienteSocket = new Socket(jsonObject.get("target").toString(), 4445);
+                clienteSocket = new Socket(jsonObject.get("target").toString(), 9000);
                 outToServer = new DataOutputStream(clienteSocket.getOutputStream());
                 //sentence = txtSendMessage.getText().toString();
                 txtSendMessage.setText("");
