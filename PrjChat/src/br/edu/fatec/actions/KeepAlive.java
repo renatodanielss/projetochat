@@ -1,11 +1,14 @@
 package br.edu.fatec.actions;
 
+import java.sql.Timestamp;
+
 import org.json.JSONArray;
 
 public class KeepAlive {
 	private String action;
 	private String nickname;
 	private JSONArray users;
+	private Timestamp dateHour;
 	
 	public KeepAlive(){
 		this.users = new JSONArray();
@@ -33,6 +36,14 @@ public class KeepAlive {
 
 	public void setUsers(JSONArray users) {
 		this.users = users;
+	}
+
+	public Timestamp getDateHour() {
+		return dateHour;
+	}
+
+	public void setDateHour(Timestamp dateHour) {
+		this.dateHour = dateHour;
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package br.edu.fatec.actions;
 
+import java.sql.Timestamp;
+
 public class Say {
 	private String target;
 	private String action;
 	private String content;
+	private Timestamp dateHour;
 	
 	public String getTarget() {
 		return target;
@@ -27,6 +30,14 @@ public class Say {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Timestamp getDateHour() {
+		return dateHour;
+	}
+
+	public void setDateHour(Timestamp dateHour) {
+		this.dateHour = dateHour;
 	}
 
 	@Override
