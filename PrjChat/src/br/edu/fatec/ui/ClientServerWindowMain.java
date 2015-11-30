@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import br.edu.fatec.actions.Say;
 import br.edu.fatec.actions.User;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class ClientServerWindowMain {
 	protected Shell shlChat;
@@ -33,6 +34,8 @@ public class ClientServerWindowMain {
     private List list;
     private JSONArray users;
     private String nickname;
+    private Text nameListUer;
+    private Button btnSusurrar;
 
 	/**
 	 * Launch the application.
@@ -71,7 +74,7 @@ public class ClientServerWindowMain {
 	 */
 	protected void createContents() {
 		shlChat = new Shell();
-        shlChat.setSize(714, 300);
+        shlChat.setSize(714, 369);
         shlChat.setText("Chat");
         txtSendMessage = new Text(shlChat, 2048);
         txtSendMessage.addKeyListener(new KeyAdapter() {
@@ -89,7 +92,7 @@ public class ClientServerWindowMain {
             }
         });
         
-        txtSendMessage.setBounds(45, 197, 334, 21);
+        txtSendMessage.setBounds(56, 255, 334, 31);
         Button btnSendMessage = new Button(shlChat, 0);
         btnSendMessage.addSelectionListener(new SelectionAdapter() {
 
@@ -104,11 +107,11 @@ public class ClientServerWindowMain {
             }
         });
         
-        btnSendMessage.setBounds(45, 222, 75, 25);
+        btnSendMessage.setBounds(56, 290, 75, 25);
         btnSendMessage.setText("&Enviar");
         txtMessages = new Text(shlChat, 2626);
         txtMessages.setEditable(false);
-        txtMessages.setBounds(45, 10, 335, 171);
+        txtMessages.setBounds(56, 78, 335, 171);
         
         list = new List(shlChat, SWT.BORDER);
         
@@ -137,7 +140,18 @@ public class ClientServerWindowMain {
         }
         
         //list.setItems(new String[] {"Teste 1", "Teste 2", "Teste 3"});
-        list.setBounds(398, 10, 278, 171);
+        list.setBounds(397, 84, 278, 202);
+        
+        nameListUer = new Text(shlChat, SWT.NONE);
+        nameListUer.setFont(SWTResourceManager.getFont("Noto Sans", 10, SWT.BOLD));
+        nameListUer.setText("Usuários");
+        nameListUer.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+        nameListUer.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_CYAN));
+        nameListUer.setBounds(397, 51, 278, 27);
+        
+        btnSusurrar = new Button(shlChat, SWT.CHECK);
+        btnSusurrar.setBounds(155, 293, 98, 22);
+        btnSusurrar.setText("Susurrar");
         list.addSelectionListener(new SelectionAdapter() {
         	@Override
         	public void widgetSelected(SelectionEvent e) {
