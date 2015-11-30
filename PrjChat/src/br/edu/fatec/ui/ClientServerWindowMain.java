@@ -106,7 +106,7 @@ public class ClientServerWindowMain {
         
         User user = new User();
 		user.setNickname("Renato");
-		user.setAddress("223.139.219.104");
+		user.setAddress("223.139.219.105");
 		
 		User user2 = new User();
 		user2.setNickname("Mayara");
@@ -175,15 +175,15 @@ public class ClientServerWindowMain {
     {
         if(txtSendMessage.getText().length() > 0)
         {
-            String sentence = "";
+            //String sentence = "";
             try
             {
                 clienteSocket = new Socket(jsonObject.get("target").toString(), 4445);
                 outToServer = new DataOutputStream(clienteSocket.getOutputStream());
-                sentence = txtSendMessage.getText().toString();
+                //sentence = txtSendMessage.getText().toString();
                 txtSendMessage.setText("");
-                outToServer.writeBytes((new StringBuilder(String.valueOf(sentence))).append('\n').toString());
-                txtMessages.append((new StringBuilder("Notebook: ")).append(sentence).append("\n\n").toString());
+                outToServer.writeBytes((new StringBuilder(String.valueOf(jsonObject))).append('\n').toString());
+                txtMessages.append((new StringBuilder("Notebook: ")).append(jsonObject.get("content").toString()).append("\n\n").toString());
                 txtSendMessage.setFocus();
                 clienteSocket.close();
             }
