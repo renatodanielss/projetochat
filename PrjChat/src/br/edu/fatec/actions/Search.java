@@ -1,8 +1,11 @@
 package br.edu.fatec.actions;
 
+import java.sql.Timestamp;
+
 public class Search {
 	private String action;
 	private String nickname;
+	private Timestamp dateHour;
 	
 	public String getAction() {
 		return action;
@@ -18,6 +21,14 @@ public class Search {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public Timestamp getDateHour() {
+		return dateHour;
+	}
+
+	public void setDateHour(Timestamp dateHour) {
+		this.dateHour = dateHour;
 	}
 
 	@Override
