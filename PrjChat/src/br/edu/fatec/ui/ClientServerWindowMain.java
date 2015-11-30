@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 import br.edu.fatec.actions.Say;
 import br.edu.fatec.actions.User;
-import org.eclipse.wb.swt.SWTResourceManager;
+import br.edu.fatec.server.SearchBroadcastAddress;
 
 public class ClientServerWindowMain {
 	protected Shell shlChat;
@@ -33,7 +33,7 @@ public class ClientServerWindowMain {
     private Text txtMessages;
     private List list;
     private JSONArray users;
-    private String nickname;
+    private static String nickname;
     private Text nameListUer;
     private Button btnSusurrar;
 
@@ -43,7 +43,7 @@ public class ClientServerWindowMain {
 	 */
 	public static void main(String[] args) {
 		try {
-			String nickname = "";
+			nickname = "";
 			while(nickname.trim().equals("")){
 				nickname = JOptionPane.showInputDialog("Digite o nickname: ");
 			}
@@ -73,6 +73,8 @@ public class ClientServerWindowMain {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
+		SearchBroadcastAddress searchBroadcast = new SearchBroadcastAddress(0);
+		searchBroadcast.start();
 		shlChat = new Shell();
         shlChat.setSize(714, 369);
         shlChat.setText("Chat");
@@ -228,5 +230,9 @@ public class ClientServerWindowMain {
 				}
 			}
 		});
+	}
+
+	public static String getNickname() {
+		return nickname;
 	}
 }

@@ -5,10 +5,10 @@ import java.net.DatagramSocket;
 
 import org.json.JSONObject;
 
-public class UDPReceive extends Thread{
+public class UDPReceiveSearchBroadcast extends Thread{
 	
 	public static void main (String[] args){
-		UDPReceive udpReceive = new UDPReceive();
+		UDPReceiveSearchBroadcast udpReceive = new UDPReceiveSearchBroadcast();
 		udpReceive.start();
 	}
 	
@@ -34,9 +34,12 @@ public class UDPReceive extends Thread{
 				// Wait to receive a datagram
 				dsocket.receive(packet);
 				
+				System.out.println("IPSocket: " + dsocket.getInetAddress());
+				System.out.println("IPPacket: " + packet.getSocketAddress());
+				
 				//Converter  o conteúdo do pacote do datagrama e exibir na tela para o usuário
-				JSONObject jsonSay = new JSONObject(new String(buffer, 0, packet.getLength()));
-				System.out.println(jsonSay);
+				JSONObject jsonSearch = new JSONObject(new String(buffer, 0, packet.getLength()));
+				System.out.println(jsonSearch);
 				
 				//Resetar o tamanho do pacote antes de reusá-lo
 				packet.setLength(buffer.length);

@@ -35,6 +35,7 @@ public class ServidorThread extends Thread
             	JSONObject jsonSay = new JSONObject((new StringBuilder(String.valueOf(inFromClient1.readLine()))).append('\n').toString());
             	
                 System.out.println(jsonSay);
+                System.out.println(connectionSocket1.getInetAddress());
             }
 
             System.out.println("Notebook saiu da conversa");
