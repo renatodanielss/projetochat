@@ -29,6 +29,8 @@ public class ClientServerWindowMain {
     private DataOutputStream outToServer;
     private Text txtMessages;
     private List list;
+    private JSONArray users;
+    private String nickname;
 
 	/**
 	 * Launch the application.

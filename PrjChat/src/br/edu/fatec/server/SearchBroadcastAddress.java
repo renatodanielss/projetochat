@@ -19,10 +19,10 @@ public class SearchBroadcastAddress extends Thread{
 	 * @param args
 	 * @throws IOException
 	 */
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		SearchBroadcastAddress sBroadcastAdress = new SearchBroadcastAddress();
 		sBroadcastAdress.start();
-	}
+	}*/
 	
 	@Override
 	public void run() {
