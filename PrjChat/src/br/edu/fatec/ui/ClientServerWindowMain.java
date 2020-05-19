@@ -3,8 +3,14 @@ package br.edu.fatec.ui;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -73,8 +79,74 @@ public class ClientServerWindowMain {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
+		this.users = new JSONArray();
 		SearchBroadcastAddress searchBroadcast = new SearchBroadcastAddress(0);
 		searchBroadcast.start();
+		
+		Thread udpReceiveSearchBroadcast = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					int port = 9000;
+
+					// Create a socket to listen on the port.
+					@SuppressWarnings("resource")
+					DatagramSocket dsocket = new DatagramSocket(port);
+
+					// Create a buffer to read datagrams into. If a
+					// packet is larger than this buffer, the
+					// excess will simply be discarded!
+					byte[] buffer = new byte[2048];
+
+					// Create a packet to receive data into the buffer
+					DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+					// Now loop forever, waiting to receive packets and printing them.
+					while (true) {
+						// Wait to receive a datagram
+						dsocket.receive(packet);
+						
+						String[] ipPacket = packet.getSocketAddress().toString().replace("/", "").split(":");
+						String userIP = ipPacket[0];
+						
+						System.out.println("userIP:" + userIP);
+						Socket s = new Socket("localhost", 9000);
+						System.out.println("Socket:" + s.getLocalAddress());
+						
+						//if (userIP.equals(InetAddress.getLocalHost()))
+						//Converter  o conteúdo do pacote do datagrama e exibir na tela para o usuário
+						JSONObject jsonSearch = new JSONObject(new String(buffer, 0, packet.getLength()));
+						
+						Date date = new Date();
+						Timestamp timestamp = new Timestamp(date.getTime());
+						
+						User user = new User();
+						user.setAddress(userIP);
+						user.setNickname(jsonSearch.get("nickname").toString());
+						user.setDateHour(timestamp);
+						JSONObject jsonUser = new JSONObject(user);
+						users.put(jsonUser);
+						System.out.println("jsonSearch: " + jsonSearch);
+						System.out.println("jsonUser: " + jsonUser);
+						System.out.println("users: " + users);
+						
+						//Resetar o tamanho do pacote antes de reusá-lo
+						packet.setLength(buffer.length);
+						
+						// Convert the contents to a string, and display them
+						//String msg = new String(buffer, 0, packet.getLength());
+						//System.out.println(packet.getAddress().getHostName() + ": " + msg);
+
+						// Reset the length of the packet before reusing it.
+						//packet.setLength(buffer.length);
+					}
+				} catch (Exception e) {
+					System.err.println(e);
+				}
+			}
+		});
+		udpReceiveSearchBroadcast.start();
+		
 		shlChat = new Shell();
         shlChat.setSize(714, 369);
         shlChat.setText("Chat");
@@ -117,28 +189,12 @@ public class ClientServerWindowMain {
         
         list = new List(shlChat, SWT.BORDER);
         
-        User user = new User();
-		user.setNickname("Renato");
-		user.setAddress("223.139.219.105");
-		
-		User user2 = new User();
-		user2.setNickname("Mayara");
-		user2.setAddress("223.139.219.104");
-		
-		JSONObject jsonUser = new JSONObject(user);
-		JSONObject jsonUser2 = new JSONObject(user2);
-		
-        JSONArray users = new JSONArray();
-        
-        users.put(jsonUser);
-        users.put(jsonUser2);
-        
-        System.out.println(users);
-        
-        for (int i = 0; i < users.length(); i++){
-        	JSONObject jsonUsers = users.getJSONObject(i);
-        	//System.out.println(jsonSays);
-        	list.add(jsonUsers.get("nickname").toString() + " - " + jsonUsers.get("address").toString());
+        if (this.users.length() > 0){
+	        for (int i = 0; i < users.length(); i++){
+	        	JSONObject jsonUsers = users.getJSONObject(i);
+	        	//System.out.println(jsonSays);
+	        	list.add(jsonUsers.get("nickname").toString() + " - " + jsonUsers.get("address").toString());
+	        }
         }
         
         //list.setItems(new String[] {"Teste 1", "Teste 2", "Teste 3"});
@@ -163,8 +219,8 @@ public class ClientServerWindowMain {
         	}
         });
         
-        Thread servidorThread = new Thread(new Runnable() {
-
+        Thread receiveMessageThread = new Thread(new Runnable() {
+        	@Override
             public void run()
             {
                 try
@@ -192,7 +248,7 @@ public class ClientServerWindowMain {
                 System.out.println("Conversa encerrada!");
             }
         });
-        servidorThread.start();
+        receiveMessageThread.start();
 	}
 	
 	private void enviarMensagem(JSONObject jsonObject)

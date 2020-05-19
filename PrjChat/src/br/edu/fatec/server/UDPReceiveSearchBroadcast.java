@@ -2,8 +2,12 @@ package br.edu.fatec.server;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import org.json.JSONObject;
+
+import br.edu.fatec.actions.User;
 
 public class UDPReceiveSearchBroadcast extends Thread{
 	
@@ -34,11 +38,19 @@ public class UDPReceiveSearchBroadcast extends Thread{
 				// Wait to receive a datagram
 				dsocket.receive(packet);
 				
-				System.out.println("IPSocket: " + dsocket.getInetAddress());
-				System.out.println("IPPacket: " + packet.getSocketAddress());
+				String[] ipPacket = packet.getSocketAddress().toString().replace("/", "").split(":");
+				String userIP = ipPacket[0];
 				
 				//Converter  o conteúdo do pacote do datagrama e exibir na tela para o usuário
 				JSONObject jsonSearch = new JSONObject(new String(buffer, 0, packet.getLength()));
+				
+				Date date = new Date();
+				Timestamp timestamp = new Timestamp(date.getTime());
+				
+				User user = new User();
+				user.setAddress(userIP);
+				user.setNickname(jsonSearch.get("nickname").toString());
+				user.setDateHour(timestamp);
 				System.out.println(jsonSearch);
 				
 				//Resetar o tamanho do pacote antes de reusá-lo

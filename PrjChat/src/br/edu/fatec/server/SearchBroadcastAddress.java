@@ -18,10 +18,28 @@ import br.edu.fatec.ui.ClientServerWindowMain;
 public class SearchBroadcastAddress extends Thread{
 	private int countUsers;
 	
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		SearchBroadcastAddress teste = new SearchBroadcastAddress(0);
 		teste.start();
-	}
+	}*/
+	
+	public static void main(String[] args) throws Exception // Just for simplicity
+	    {
+	        for (Enumeration<NetworkInterface> ifaces = 
+	               NetworkInterface.getNetworkInterfaces();
+	             ifaces.hasMoreElements(); )
+	        {
+	            NetworkInterface iface = ifaces.nextElement();
+	            System.out.println(iface.getName() + ":");
+	            for (Enumeration<InetAddress> addresses =
+	                   iface.getInetAddresses();
+	                 addresses.hasMoreElements(); )
+	            {
+	                InetAddress address = addresses.nextElement();
+	                System.out.println("  " + address);
+	            }
+	        }
+	    }
 	
 	/*public static void main(String[] args){
 		SearchBroadcastAddress teste = new SearchBroadcastAddress(0);
